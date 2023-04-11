@@ -32,7 +32,8 @@ def generate_global_time_series(file_path) -> pd.DataFrame:
 
 def generate_blockchain_by_actor(file_path):
     df = pd.read_csv(filepath_or_buffer=file_path)
-    df['date'] = pd.to_datetime(df['date']) 
+    df['date'] = pd.to_datetime(df['date'])
+    df = df.sort_values(by='date') 
     # Unuseful columns
     df = df.drop(['Unnamed: 0','year','day','month'],axis=1)
     df = df.set_index('date')
