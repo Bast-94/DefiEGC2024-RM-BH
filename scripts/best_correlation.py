@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-
+import matplotlib.pyplot as plt
 def get_best_values(actor_correlation_matrix: pd.DataFrame) -> tuple:
     s = actor_correlation_matrix.stack()
     max_index = s.idxmax()[0]
@@ -25,3 +25,17 @@ def compute_best_correlation(block_chain_df: pd.DataFrame):
     
     return best_index, best_col,best_val,best_col_to_analyse
 
+
+def display_correlation_by_col(block_chain_df: pd.DataFrame,column_to_analyze: str =None, window_size: int = 14):
+    if(column_to_analyze is None):
+        
+        max_index,max_col, _ ,column_to_analyze =compute_best_correlation(block_chain_df)
+    else:
+        max_index,max_col, _ = compute_best_correlation_by_col(block_chain_df,column_to_analyze)
+    f1, ax1 = plt.subplots(figsize=(16,9))
+    ax2 = ax1.twinx()
+    temp_df = block_chain_df[block_chain_df['identity'] == max_col][column_to_analyze]
+    ax1.plot(temp_df.rolling(window=window_size).mean(),color='orange')
+    temp_df = block_chain_df[block_chain_df['identity'] == max_index][column_to_analyze]
+    ax2.plot(temp_df.rolling(window=window_size).mean())
+    plt.title(f"Comparison of '{column_to_analyze}' between {max_col} and {max_index}")
