@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import plotly.express as px
 def get_best_values(actor_correlation_matrix: pd.DataFrame) -> tuple:
     s = actor_correlation_matrix.stack()
     max_index = s.idxmax()[0]
@@ -8,11 +9,17 @@ def get_best_values(actor_correlation_matrix: pd.DataFrame) -> tuple:
     max_value = actor_correlation_matrix[max_col].loc[max_index]
     return max_index,max_col, max_value
 
-def compute_best_correlation_by_col(block_chain_df: pd.DataFrame,column_to_analyze: str ) -> tuple:
+def get_corr_mat(block_chain_df: pd.DataFrame,column_to_analyze: str) -> pd.DataFrame: 
     df_unstacked = block_chain_df.groupby(['date', 'identity'])[column_to_analyze].mean().unstack()
     actor_correlation_matrix = df_unstacked.corr()
-    np.fill_diagonal(actor_correlation_matrix.values,0)
-    return get_best_values(actor_correlation_matrix)
+    np.fill_diagonal(actor_correlation_matrix.values,0) 
+    return actor_correlation_matrix
+
+def compute_best_correlation_by_col(block_chain_df: pd.DataFrame,column_to_analyze: str ) -> tuple:
+    
+    return get_best_values(get_corr_mat(block_chain_df,column_to_analyze))
+
+
 
 def compute_best_correlation(block_chain_df: pd.DataFrame):
     best_index, best_col,best_val = None,None, 0
