@@ -24,21 +24,23 @@ def get_corr_mat(block_chain_df: pd.DataFrame,column_to_analyze: str) -> pd.Data
     return actor_correlation_matrix
 
 def compute_best_correlation_by_col(block_chain_df: pd.DataFrame,column_to_analyze: str ) -> tuple:
-    
     return get_best_values(get_corr_mat(block_chain_df,column_to_analyze))
 
 
 
-def compute_best_correlation(block_chain_df: pd.DataFrame):
-    best_index, best_col,best_val = None,None, 0
+def compute_best_correlation(block_chain_df: pd.DataFrame) -> tuple:
+    """
+    Renvoie les 
+    """
+    actor1, actor2,best_val = None,None, 0
     best_col_to_analyse = None
     for column_to_analyze in block_chain_df.columns[1:]:
         cur_index,cur_col,cur_val = compute_best_correlation_by_col(block_chain_df,column_to_analyze)
         if(cur_val>best_val):
-            best_index, best_col,best_val =cur_index,cur_col,cur_val
+            actor1, actor2,best_val =cur_index,cur_col,cur_val
             best_col_to_analyse = column_to_analyze
     
-    return best_index, best_col,best_val,best_col_to_analyse
+    return actor1, actor2,best_val,best_col_to_analyse
 
 
 def display_correlation_by_col(block_chain_df: pd.DataFrame,column_to_analyze: str =None, window_size: int = 14):
