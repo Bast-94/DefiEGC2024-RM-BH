@@ -71,7 +71,13 @@ def get_correlation_pairs(df: pd.DataFrame, threshold : float) -> list:
     pairs = [(df.columns[i], df.columns[j], corr_matrix[i,j]) for i,j in zip(*idx)]
     return pairs
 
-def get_unique_correlation_pairs(df, threshold,col=None):
+def get_unique_correlation_pairs(df: pd.DataFrame, threshold: float,col :str=None) -> list:
+    """
+    Renvoie une liste de listes qui contiennent:
+        - 2 acteurs
+        - un coefficient de corrélation dont la valeur absolue est supérieure à threshold
+        - la colonne concernée par la corrélation
+    """
     corr_pairs = get_correlation_pairs(df, threshold)
     pairs_list = []
     for pair in corr_pairs:
@@ -79,7 +85,11 @@ def get_unique_correlation_pairs(df, threshold,col=None):
             key = [pair[0], pair[1],df.loc[pair[0], pair[1]],col]
             pairs_list.append(key)
     return pairs_list
-def best_corr_list(block_chain_by_actor_df,thresh_old = 0.9):
+
+def best_corr_list(block_chain_by_actor_df: pd.DataFrame,thresh_old: float = 0.9) -> list:
+    """
+    Renvoie les meilleures corrélations en indiquant les acteurs et les colonnes concernées.
+    """
     best_corr =[]
     for col in block_chain_by_actor_df.columns[1:]:
         corr_list_by_col = get_unique_correlation_pairs(get_corr_mat(block_chain_by_actor_df,col),thresh_old,col)
@@ -87,21 +97,27 @@ def best_corr_list(block_chain_by_actor_df,thresh_old = 0.9):
             best_corr += (corr_list_by_col)
     return best_corr
 
-def best_correlation_df(block_chain_by_actor_df,thresh_old = 0.9):
+def best_correlation_df(block_chain_by_actor_df: pd.DataFrame,thresh_old :float = 0) -> pd.DataFrame:
+    """
+    Renvoie la dataframe qui contient par défaut toute les corrélations entre tous les couples d'acteurs.
+    """
     best_corr = best_corr_list(block_chain_by_actor_df,thresh_old)
     best_corr_df = pd.DataFrame.from_dict(best_corr)
     best_corr_df.columns = ['actor1','actor2','correlation_rate','related_col']
     return best_corr_df
 
-def display_comparison(block_chain_by_actor_df,key1,key2,column_to_analyze,window):
+def display_comparison(block_chain_by_actor_df: pd.DataFrame,actor1 : str,actor2 :str,column_to_analyze :str,window : int) -> None:
+    """
+    Affiche les évolutions d'une colonne `column_to_analyze` des acteurs `actor1` et `actor2` avec un lissage `window`.
+    """
     std_scaler = StandardScaler()
     
-    df1 = block_chain_by_actor_df[block_chain_by_actor_df['identity'] == key1].copy()
+    df1 = block_chain_by_actor_df[block_chain_by_actor_df['identity'] == actor1].copy()
     df1[column_to_analyze] = df1[column_to_analyze].rolling(window=window).mean()
     df1_normalized = std_scaler.fit_transform(df1[[column_to_analyze]])
     df1_normalized = pd.DataFrame(np.array(df1_normalized, dtype=np.float64), columns=[column_to_analyze],index=df1.index)
     
-    df2 = block_chain_by_actor_df[block_chain_by_actor_df['identity'] == key2].copy()
+    df2 = block_chain_by_actor_df[block_chain_by_actor_df['identity'] == actor2].copy()
     df2[column_to_analyze] = df1[column_to_analyze].rolling(window=window).mean()
     df2_normalized = std_scaler.fit_transform(df2[[column_to_analyze]])
     df2_normalized = pd.DataFrame(np.array(df2_normalized, dtype=np.float64), columns=[column_to_analyze],index=df2.index)
@@ -109,7 +125,7 @@ def display_comparison(block_chain_by_actor_df,key1,key2,column_to_analyze,windo
     df = pd.concat([df1, df2])
     
     fig = px.line(df, x=df.index, y=column_to_analyze, color="identity",
-                title=f"Comparison of '{column_to_analyze}' between {key1} and {key2} (Normalized)",
+                title=f"Comparison of '{column_to_analyze}' between {actor1} and {actor2} (Normalized)",
                 labels={"value": f"{column_to_analyze} (rolling mean)", "index": "date"})
    
     fig.show()
