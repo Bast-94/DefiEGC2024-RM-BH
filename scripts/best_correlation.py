@@ -30,7 +30,8 @@ def compute_best_correlation_by_col(block_chain_df: pd.DataFrame,column_to_analy
 
 def compute_best_correlation(block_chain_df: pd.DataFrame) -> tuple:
     """
-    Renvoie les 
+    Renvoie le couple d'acteur, le meilleur coefficient de corrélation et 
+    la colonne qui donne le meilleur coefficient de corrélation
     """
     actor1, actor2,best_val = None,None, 0
     best_col_to_analyse = None
@@ -43,12 +44,13 @@ def compute_best_correlation(block_chain_df: pd.DataFrame) -> tuple:
     return actor1, actor2,best_val,best_col_to_analyse
 
 
-def display_correlation_by_col(block_chain_df: pd.DataFrame,column_to_analyze: str =None, window_size: int = 14):
+def display_correlation_by_col(block_chain_df: pd.DataFrame,column_to_analyze: str =None, window_size: int = 14) -> None :
     if(column_to_analyze is None):
         
         max_index,max_col, _ ,column_to_analyze =compute_best_correlation(block_chain_df)
     else:
         max_index,max_col, _ = compute_best_correlation_by_col(block_chain_df,column_to_analyze)
+        
     f1, ax1 = plt.subplots(figsize=(16,9))
     ax2 = ax1.twinx()
     temp_df = block_chain_df[block_chain_df['identity'] == max_col][column_to_analyze]
@@ -59,7 +61,10 @@ def display_correlation_by_col(block_chain_df: pd.DataFrame,column_to_analyze: s
     
 
 
-def get_correlation_pairs(df, threshold):
+def get_correlation_pairs(df: pd.DataFrame, threshold : float) -> list:
+    """
+    Renvoie la liste des couples d'acteurs qui ont un coefficient supérieur à threshold.
+    """
     corr_matrix = df.values
     np.fill_diagonal(corr_matrix, np.nan)
     idx = np.where(np.abs(corr_matrix) >= threshold)
