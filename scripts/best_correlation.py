@@ -3,7 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import plotly.express as px
 from sklearn.preprocessing import StandardScaler
-
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+from scipy.stats import gaussian_kde
 def get_best_values(actor_correlation_matrix: pd.DataFrame) -> tuple:
     """"
     Renvoie les indexes et la meilleure valeur de la matrice de corrélation
@@ -128,4 +130,30 @@ def display_comparison(block_chain_by_actor_df: pd.DataFrame,actor1 : str,actor2
                 title=f"Comparison of '{column_to_analyze}' between {actor1} and {actor2} (Normalized)",
                 labels={"value": f"{column_to_analyze} (rolling mean)", "index": "date"})
    
+    fig.show()
+
+def display_correlation_histogram(best_corr_df: pd.DataFrame) -> None:
+    """
+    Affiche les histogrammes de répartion des corrélations de chaque colonne.
+    """
+    related_cols = best_corr_df.related_col.unique()
+    rows,cols = (len(related_cols)+1)//2,2
+    counter = 0
+    fig = make_subplots(rows=rows, cols=cols)
+    height_per_row,width_per_col = 400,800
+    for cur_col in related_cols:
+        cur_data = best_corr_df[best_corr_df['related_col'] == cur_col]['correlation_rate']
+        row,col = (counter)//2 +1,counter%2+1
+        fig.append_trace(
+        trace=go.Histogram(x=cur_data, histnorm='probability density', name=f'{cur_col} histogramm'),
+        row=row, col=col
+        ) 
+        
+        fig.add_trace(
+            go.Scatter(x=cur_data, y=gaussian_kde(cur_data)(cur_data), mode='lines',name=''),
+            row=row, col=col
+        ) 
+        counter+=1
+    
+    fig.update_layout(title_text="Histogrammes",height=height_per_row*2,width=width_per_col)
     fig.show()
