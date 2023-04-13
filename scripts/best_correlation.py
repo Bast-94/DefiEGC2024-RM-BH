@@ -46,3 +46,34 @@ def display_correlation_by_col(block_chain_df: pd.DataFrame,column_to_analyze: s
     temp_df = block_chain_df[block_chain_df['identity'] == max_index][column_to_analyze]
     ax2.plot(temp_df.rolling(window=window_size).mean())
     plt.title(f"Comparison of '{column_to_analyze}' between {max_col} and {max_index}")
+    
+
+
+def get_correlation_pairs(df, threshold):
+    corr_matrix = df.values
+    np.fill_diagonal(corr_matrix, np.nan)
+    idx = np.where(np.abs(corr_matrix) >= threshold)
+    pairs = [(df.columns[i], df.columns[j], corr_matrix[i,j]) for i,j in zip(*idx)]
+    return pairs
+
+def get_unique_correlation_pairs(df, threshold,col=None):
+    corr_pairs = get_correlation_pairs(df, threshold)
+    pairs_list = []
+    for pair in corr_pairs:
+        if pair[0] < pair[1]:
+            key = [pair[0], pair[1],df.loc[pair[0], pair[1]],col]
+            pairs_list.append(key)
+    return pairs_list
+def best_corr_list(block_chain_by_actor_df,thresh_old = 0.9):
+    best_corr =[]
+    for col in block_chain_by_actor_df.columns[1:]:
+        corr_list_by_col = get_unique_correlation_pairs(get_corr_mat(block_chain_by_actor_df,col),thresh_old,col)
+        if(corr_list_by_col != []):
+            best_corr += (corr_list_by_col)
+    return best_corr
+
+def best_correlation_df(block_chain_by_actor_df,thresh_old = 0.9):
+    best_corr = best_corr_list(block_chain_by_actor_df,thresh_old)
+    best_corr_df = pd.DataFrame.from_dict(best_corr)
+    best_corr_df.columns = ['actor1','actor2','correlation_rate','related_col']
+    return best_corr_df
