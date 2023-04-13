@@ -2,7 +2,12 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import plotly.express as px
+from sklearn.preprocessing import StandardScaler
+
 def get_best_values(actor_correlation_matrix: pd.DataFrame) -> tuple:
+    """"
+    Renvoie les indexes et la meilleure valeur de la matrice de corrélation
+    """
     s = actor_correlation_matrix.stack()
     max_index = s.idxmax()[0]
     max_col = actor_correlation_matrix.loc[max_index].idxmax()
@@ -10,6 +15,9 @@ def get_best_values(actor_correlation_matrix: pd.DataFrame) -> tuple:
     return max_index,max_col, max_value
 
 def get_corr_mat(block_chain_df: pd.DataFrame,column_to_analyze: str) -> pd.DataFrame: 
+    """
+    Renvoie la matrice de corrélation selon l'évolution d'une colonne.
+    """
     df_unstacked = block_chain_df.groupby(['date', 'identity'])[column_to_analyze].mean().unstack()
     actor_correlation_matrix = df_unstacked.corr()
     np.fill_diagonal(actor_correlation_matrix.values,0) 
@@ -77,3 +85,24 @@ def best_correlation_df(block_chain_by_actor_df,thresh_old = 0.9):
     best_corr_df = pd.DataFrame.from_dict(best_corr)
     best_corr_df.columns = ['actor1','actor2','correlation_rate','related_col']
     return best_corr_df
+
+def display_comparison(block_chain_by_actor_df,key1,key2,column_to_analyze,window):
+    std_scaler = StandardScaler()
+    
+    df1 = block_chain_by_actor_df[block_chain_by_actor_df['identity'] == key1].copy()
+    df1[column_to_analyze] = df1[column_to_analyze].rolling(window=window).mean()
+    df1_normalized = std_scaler.fit_transform(df1[[column_to_analyze]])
+    df1_normalized = pd.DataFrame(np.array(df1_normalized, dtype=np.float64), columns=[column_to_analyze],index=df1.index)
+    
+    df2 = block_chain_by_actor_df[block_chain_by_actor_df['identity'] == key2].copy()
+    df2[column_to_analyze] = df1[column_to_analyze].rolling(window=window).mean()
+    df2_normalized = std_scaler.fit_transform(df2[[column_to_analyze]])
+    df2_normalized = pd.DataFrame(np.array(df2_normalized, dtype=np.float64), columns=[column_to_analyze],index=df2.index)
+
+    df = pd.concat([df1, df2])
+    
+    fig = px.line(df, x=df.index, y=column_to_analyze, color="identity",
+                title=f"Comparison of '{column_to_analyze}' between {key1} and {key2} (Normalized)",
+                labels={"value": f"{column_to_analyze} (rolling mean)", "index": "date"})
+   
+    fig.show()
