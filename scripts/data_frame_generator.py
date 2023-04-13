@@ -3,6 +3,9 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 # Generate external time series.
 def generate_external_time_series(file_path, window=1) -> pd.DataFrame:
+    """
+    Génère une dataframe liée aux séries du fichier external.csv
+    """
     # Load Dataframe 
     df = pd.read_csv(file_path)
     
@@ -16,6 +19,9 @@ def generate_external_time_series(file_path, window=1) -> pd.DataFrame:
     return df
 
 def generate_global_time_series(file_path) -> pd.DataFrame:
+    """
+    Génère une dataframe liée aux séries du fichier global.csv
+    """
     # Load Dataframe 
     df = pd.read_csv(file_path)
     df["date"] = df["year"].astype(str) +"-" + df["month"].astype(str)+ "-" + df["day"].astype(str)
@@ -30,7 +36,10 @@ def generate_global_time_series(file_path) -> pd.DataFrame:
     df = df.set_index('date')
     return df
 
-def generate_blockchain_by_actor(file_path):
+def generate_blockchain_by_actor(file_path:str) -> pd.DataFrame:
+    """
+    Génère une dataframe liée aux séries du fichier blockchain_by_actor.csv
+    """
     df = pd.read_csv(filepath_or_buffer=file_path)
     df['date'] = pd.to_datetime(df['date'])
     df = df.sort_values(by='date') 
@@ -39,6 +48,8 @@ def generate_blockchain_by_actor(file_path):
     df = df.set_index('date')
     return df
 
+
+## DEPRECATED ##
 def min_max_norm(df):
     min_max_scaler = MinMaxScaler()
     df_normalized = min_max_scaler.fit_transform(df)
