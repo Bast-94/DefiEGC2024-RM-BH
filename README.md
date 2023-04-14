@@ -1,4 +1,5 @@
 # Défi EGC 2024 par Rayan Maniani et Bastien Hoorelbeke, `SCIA`
+
 [Répertoire](https://github.com/Bast-94/DefiEGC2024-RM-BH)
 ## Contenu du projet
  * [subject.md](./subject.md): Sujet du projet
