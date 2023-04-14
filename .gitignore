@@ -1,6 +1,7 @@
+scripts/__pycache__
 __pycache__
 dist
 timeseries
 networks
-timeseries
-networks
+*.pyc
+*.zip

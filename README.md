@@ -1,16 +1,15 @@
-# Project tree
-.
- * [subject.md](./subject.md)
- * [scripts](./scripts)
+# Défi EGC 2024 par Rayan Maniani et Bastien Hoorelbeke, `SCIA`
+![Répertoire](https://github.com/Bast-94/DefiEGC2024-RM-BH)
+## Contenu du projet
+ * [subject.md](./subject.md): Sujet du projet
+ * [scripts](./scripts): Scripts liés au projet
    * [__init__.py](./scripts/__init__.py)
    * [data_frame_generator.py](./scripts/data_frame_generator.py)
    * [best_correlation.py](./scripts/best_correlation.py)
-   * [data_frame_generator.cpython-310.pyc](./scripts/__pycache__/data_frame_generator.cpython-310.pyc)
-   * [best_correlation.cpython-310.pyc](./scripts/__pycache__/best_correlation.cpython-310.pyc)
  * [CHANGELOG.md](./CHANGELOG.md)
- * [generated_data](./generated_data)
+ * [generated_data](./generated_data): Dossier des données générées
    * [network.csv](./generated_data/network.csv)
- * [pics](./pics)
+ * [pics](./pics): 
    * [network.png](./pics/network.png)
    * [ts_actors.png](./pics/ts_actors.png)
    * [ts_global.png](./pics/ts_global.png)
@@ -19,6 +18,5 @@
    * [BTCC.png](./pics/BTCC.png)
    * [sum_fee_cmp1.png](./pics/sum_fee_cmp1.png)
    * [sum_fee_cmp2.png](./pics/sum_fee_cmp2.png)
- * [notebook.ipynb](./notebook.ipynb)
- * [tree.sh](./tree.sh)
+ * [rayan.maniani_bastien.hoorelbeke.ipynb](./notebook.ipynb): Notebook du projet.
  * [README.md](./README.md)
