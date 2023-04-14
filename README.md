@@ -18,5 +18,6 @@
    * [BTCC.png](./pics/BTCC.png)
    * [sum_fee_cmp1.png](./pics/sum_fee_cmp1.png)
    * [sum_fee_cmp2.png](./pics/sum_fee_cmp2.png)
- * [rayan.maniani_bastien.hoorelbeke.ipynb](./notebook.ipynb): Notebook du projet.
+   * [hash-rate-USD.png](./pics/hash-rate-USD.png)
+ * [rayan.maniani_bastien.hoorelbeke.ipynb](./rayan.maniani_bastien.hoorelbeke.ipynb): Notebook du projet.
  * [README.md](./README.md)
