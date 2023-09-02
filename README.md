@@ -1,4 +1,6 @@
-# Défi EGC 2024 par Rayan Maniani et Bastien Hoorelbeke, `SCIA`
+# Défi EGC 2024 par [Rayan Maniani](https://github.com/0Azertyuiop) et [Bastien Hoorelbeke](https://github.com/Bast-94), `SCIA`
+
+Projet réalisé dans le cadre du cours de "Python pour le Big Data" encadré par [Olivier Ricou](http://www.ricou.eu.org)
 
 [Répertoire](https://github.com/Bast-94/DefiEGC2024-RM-BH)
 ## Contenu du projet
@@ -9,16 +11,6 @@
    * [best_correlation.py](./scripts/best_correlation.py)
  * [CHANGELOG.md](./CHANGELOG.md)
  * [generated_data](./generated_data): Dossier des données générées
-   * [network.csv](./generated_data/network.csv)
- * [pics](./pics): 
-   * [network.png](./pics/network.png)
-   * [ts_actors.png](./pics/ts_actors.png)
-   * [ts_global.png](./pics/ts_global.png)
-   * [ts_price.png](./pics/ts_price.png)
-   * [hists.png](./pics/hists.png)
-   * [BTCC.png](./pics/BTCC.png)
-   * [sum_fee_cmp1.png](./pics/sum_fee_cmp1.png)
-   * [sum_fee_cmp2.png](./pics/sum_fee_cmp2.png)
-   * [hash-rate-USD.png](./pics/hash-rate-USD.png)
+ * [pics](./pics):
  * [rayan.maniani_bastien.hoorelbeke.ipynb](./rayan.maniani_bastien.hoorelbeke.ipynb): Notebook du projet.
- * [README.md](./README.md)
+
