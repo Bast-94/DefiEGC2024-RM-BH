@@ -1,8 +1,8 @@
 # Défi EGC 2024 par [Rayan Maniani](https://github.com/0Azertyuiop) et [Bastien Hoorelbeke](https://github.com/Bast-94), `SCIA`
 
-Projet réalisé dans le cadre du cours de "Python pour le Big Data" encadré par [Olivier Ricou](http://www.ricou.eu.org)
+Projet réalisé dans le cadre du cours de "Python pour le Big Data" encadré par [Olivier Ricou](http://www.ricou.eu.org). Le dépôt git du défi est disponible [ici](https://github.com/Yquetzal/DefiEGC2024).
 
-[Répertoire](https://github.com/Bast-94/DefiEGC2024-RM-BH)
+
 ## Contenu du projet
  * [subject.md](./subject.md): Sujet du projet
  * [scripts](./scripts): Scripts liés au projet
